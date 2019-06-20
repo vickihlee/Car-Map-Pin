@@ -36,26 +36,29 @@ class ViewController: UIViewController {
         Map.addAnnotation(annotation)
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            let identifier = "MyPin"
-            
-            if annotation is MKUserLocation {
+            guard !(annotation is MKUserLocation) else {
                 return nil
             }
             
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            let annotationIdentifier = "AnnotationIdentifier"
             
-            if annotationView == nil {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.canShowCallout = true
-                annotationView?.image = UIImage(named: "/media/uploads/vehicles/display_pics/739c2443-5c6b-405a-9eb1-b70f30debe34.png")
-                
-            } else {
+            var annotationView: MKAnnotationView?
+            if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier) {
+                annotationView = dequeuedAnnotationView
                 annotationView?.annotation = annotation
+            }
+            else {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+                annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            }
+            
+            if let annotationView = annotationView {
+                annotationView.canShowCallout = true
+                annotationView.image = UIImage(named: "car1")
             }
             
             return annotationView
         }
-    
         
     }
 
