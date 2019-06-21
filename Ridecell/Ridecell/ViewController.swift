@@ -8,65 +8,45 @@
 
 import UIKit
 import MapKit
-import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MKMapViewDelegate {
 
-    @IBOutlet var Map: MKMapView!
+    @IBOutlet weak var mapView: MKMapView!
+    var pin: CustomPin!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        var location = CLLocationCoordinate2DMake(
-            37.779816,
-            -122.395447)
+        mapView.delegate = self
+        mapView.mapType = .hybrid
         
-        var span = MKCoordinateSpanMake(0.001, 0.001)
+        let coordinate = CLLocationCoordinate2DMake(37.779816, -122.395447)
+        let span = MKCoordinateSpanMake(0.001, 0.001)
         
-        var region = MKCoordinateRegion(center: location, span: span)
-        
-        Map.setRegion(region, animated: true)
-        
-        var annotation = MKPointAnnotation()
-        annotation.coordinate = location
-        annotation.title = "7LVF807"
-        annotation.subtitle = "91 Mileage. 146,000M"
-        
-        Map.addAnnotation(annotation)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
 
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            guard !(annotation is MKUserLocation) else {
-                return nil
-            }
-            
-            let annotationIdentifier = "AnnotationIdentifier"
-            
-            var annotationView: MKAnnotationView?
-            if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier) {
-                annotationView = dequeuedAnnotationView
-                annotationView?.annotation = annotation
-            }
-            else {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-                annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-            }
-            
-            if let annotationView = annotationView {
-                annotationView.canShowCallout = true
-                annotationView.image = UIImage(named: "car1")
-            }
-            
-            return annotationView
-        }
+//        pin = CustomPin(title: "7LVF807", subtitle: "91 Mileage. 146,000M", coordinate: coordinate)
+        
+        let pin = CustomPin(title: "7LVF807", subtitle: "91 Mileage. 146,000M", coordinate: coordinate)
+//        pin.coordinate = coordinate
+//      pin.title = "7LVF807"
+//    pin.subtitle = "91 Mileage. 146,000M"
+        
+        
+        mapView.addAnnotation(pin)
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKAnnotationView(annotation: pin, reuseIdentifier: "7LVF807")
+        annotationView.image = UIImage(named: "car1")
+        let transform = CGAffineTransform(scaleX:0.5, y:0.5)
+        annotationView.transform = transform
+        
+        annotationView.canShowCallout = true
+        
+        return annotationView
     }
-
-
+    
 }
-
