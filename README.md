@@ -1,7 +1,7 @@
 A map pin of a car on a map.
 
-<br>
-<b>Features</b><br>
+
+# Features
 
 • A map of San Francisco.
 
@@ -15,15 +15,15 @@ A map pin of a car on a map.
 
 • Popup contains the mileage left.
 
-<br>
-<b>Technologies</b><br>
+
+# Technologies
 
 • Swift
 
 • Xcode
 
-<br>
-<b>Future Features</b><br>
+
+# Future Features
 
 • Have the car image inside a map pin.
 
